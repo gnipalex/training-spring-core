@@ -14,15 +14,22 @@ import java.util.TreeSet;
 public class Event extends DomainObject {
 
     private String name;
-
     private NavigableSet<LocalDateTime> airDates = new TreeSet<>();
-
     private double basePrice;
-
     private EventRating rating;
-
     private NavigableMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
 
+    public Event() {
+    }
+    
+    public Event(Event event) {
+        super(event);
+        this.name = event.name;
+        this.airDates = new TreeSet<>(event.airDates);
+        this.basePrice = event.basePrice;
+        this.rating = event.rating;
+    }
+    
     /**
      * Checks if event is aired on particular <code>dateTime</code> and assigns
      * auditorium to it.
@@ -185,24 +192,8 @@ public class Event extends DomainObject {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
         Event other = (Event) obj;
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
+        return super.equals(other) && Objects.equals(name, other.name);
     }
 
 }

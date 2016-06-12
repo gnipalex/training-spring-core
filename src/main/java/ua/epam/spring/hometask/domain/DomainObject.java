@@ -1,17 +1,25 @@
 package ua.epam.spring.hometask.domain;
 
+
 /**
  * @author Yuriy_Tkach
  */
-public class DomainObject {
+public class DomainObject extends AbstractDomainObject {
 
-    private Long id;
+    private long id;
+    
+    public DomainObject() {
+    }
+    
+    public DomainObject(DomainObject domainObject) {
+        this.id = domainObject.id;
+    }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

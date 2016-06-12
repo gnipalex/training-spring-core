@@ -1,5 +1,6 @@
 package ua.epam.spring.hometask.domain;
 
+import java.time.LocalDateTime;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.TreeSet;
@@ -9,13 +10,22 @@ import java.util.TreeSet;
  */
 public class User extends DomainObject {
 
+    private LocalDateTime birthday;
     private String firstName;
-
     private String lastName;
-
     private String email;
-
     private NavigableSet<Ticket> tickets = new TreeSet<>();
+    
+    public User() {
+    }
+    
+    public User(User user) {
+        super(user);
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.email = user.email;
+        this.birthday = user.birthday;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -48,6 +58,14 @@ public class User extends DomainObject {
     public void setTickets(NavigableSet<Ticket> tickets) {
         this.tickets = tickets;
     }
+    
+    public LocalDateTime getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDateTime birthday) {
+        this.birthday = birthday;
+    }
 
     @Override
     public int hashCode() {
@@ -56,38 +74,10 @@ public class User extends DomainObject {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
         User other = (User) obj;
-        if (email == null) {
-            if (other.email != null) {
-                return false;
-            }
-        } else if (!email.equals(other.email)) {
-            return false;
-        }
-        if (firstName == null) {
-            if (other.firstName != null) {
-                return false;
-            }
-        } else if (!firstName.equals(other.firstName)) {
-            return false;
-        }
-        if (lastName == null) {
-            if (other.lastName != null) {
-                return false;
-            }
-        } else if (!lastName.equals(other.lastName)) {
-            return false;
-        }
-        return true;
+        return super.equals(other) && Objects.equals(email, other.email) &&
+            Objects.equals(firstName, other.firstName) &&
+            Objects.equals(lastName, other.lastName);
     }
 
 }

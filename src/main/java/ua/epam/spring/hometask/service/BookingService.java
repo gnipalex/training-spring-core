@@ -30,7 +30,7 @@ public interface BookingService {
      *            Set of seat numbers that user wants to buy
      * @return total price
      */
-    public double getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user,
+    double getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user,
             @Nonnull Set<Long> seats);
 
     /**
@@ -40,7 +40,7 @@ public interface BookingService {
      * @param tickets
      *            Set of tickets
      */
-    public void bookTickets(@Nonnull Set<Ticket> tickets);
+     void bookTickets(@Nonnull Set<Ticket> tickets);
 
     /**
      * Getting all purchased tickets for event on specific air date and time
@@ -51,6 +51,6 @@ public interface BookingService {
      *            Date and time of airing of event
      * @return set of all purchased tickets
      */
-    public @Nonnull Set<Ticket> getPurchasedTicketsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime);
+    @Nonnull Set<Ticket> getPurchasedTicketsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime);
 
 }

@@ -2,6 +2,7 @@ package ua.epam.spring.hometask.domain;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ import java.util.stream.LongStream;
 /**
  * @author Yuriy_Tkach
  */
-public class Auditorium {
+public class Auditorium  extends AbstractDomainObject {
 
     private String name;
 
@@ -19,6 +20,12 @@ public class Auditorium {
     private Set<Long> vipSeats = Collections.emptySet();
 
     public Auditorium() {
+    }
+    
+    public Auditorium(Auditorium auditorium) {
+        this.name = auditorium.name;
+        this.vipSeats = new HashSet<>(auditorium.vipSeats);
+        this.numberOfSeats = auditorium.numberOfSeats;
     }
 
     /**
@@ -67,24 +74,8 @@ public class Auditorium {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
         Auditorium other = (Auditorium) obj;
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
+        return super.equals(other) && Objects.equals(name, other.name);
     }
 
 }
