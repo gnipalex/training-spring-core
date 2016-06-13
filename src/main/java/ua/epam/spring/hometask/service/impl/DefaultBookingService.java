@@ -28,6 +28,7 @@ public class DefaultBookingService implements BookingService {
         checkIfEventHasSlotForDateTime(event, dateTime);
         double totalPrice = 0D;
         totalPrice += getBasePrice(event, dateTime, seats);
+        // wrong discount calculation
         totalPrice -= discountService.getDiscount(user, event, dateTime, seats.size());
         return totalPrice;
     }

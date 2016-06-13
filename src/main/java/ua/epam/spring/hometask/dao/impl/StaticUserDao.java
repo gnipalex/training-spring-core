@@ -87,19 +87,19 @@ public class StaticUserDao implements UserDao, OriginalDomainObjectProvider<User
         if (originalUser == null) {
             throw new IllegalStateException("user does not exist");
         }
-        removeUserFromTickets(user);
+//        removeUserFromTickets(user);
         users.remove(originalUser);
     }
 
-    public void removeUserFromTickets(User user) {
-        Set<Ticket> userTickets = ticketDao.getTicketsForUser(user);
-        if (userTickets != null) {
-            userTickets.stream().map(originalTicketObjectProvider::getOriginalDomainObject)
-                .forEach(originalTicket -> {
-                    originalTicket.setUser(null);
-                });
-        }
-    }
+//    private void removeUserFromTickets(User user) {
+//        Set<Ticket> userTickets = ticketDao.getTicketsForUser(user);
+//        if (userTickets != null) {
+//            userTickets.stream().map(originalTicketObjectProvider::getOriginalDomainObject)
+//                .forEach(originalTicket -> {
+//                    originalTicket.setUser(null);
+//                });
+//        }
+//    }
 
     @Override
     public User getById(long id) {

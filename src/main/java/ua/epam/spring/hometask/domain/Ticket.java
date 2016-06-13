@@ -28,9 +28,9 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
         this.seat = seat;
     }
 
-    public User getUser() {
-        return user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
 
     public Event getEvent() {
         return event;
@@ -44,9 +44,9 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
         return seat;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
     public void setEvent(Event event) {
         this.event = event;
