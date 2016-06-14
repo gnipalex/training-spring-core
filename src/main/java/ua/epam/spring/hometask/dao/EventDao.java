@@ -11,13 +11,5 @@ public interface EventDao extends DomainObjectDao<Event> {
     Event getByName(String name);
     
     NavigableMap<LocalDateTime, Auditorium> getAuditoriumAssignments(Event event);
-    
-    void assignAuditorium(Event event, Auditorium auditorium, LocalDateTime dateTime);
-    
-    boolean removeAuditoriumAssignment(Event event, LocalDateTime dateTime);
-    
-    boolean removeAirDateTime(Event event, LocalDateTime dateTime);
-    
-    
-    
+
 }

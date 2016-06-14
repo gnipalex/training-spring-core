@@ -14,9 +14,8 @@ import java.util.stream.LongStream;
 public class Auditorium  extends AbstractDomainObject {
 
     private String name;
-
+    private String code;
     private long numberOfSeats;
-
     private Set<Long> vipSeats = Collections.emptySet();
 
     public Auditorium() {
@@ -26,6 +25,7 @@ public class Auditorium  extends AbstractDomainObject {
         this.name = auditorium.name;
         this.vipSeats = new HashSet<>(auditorium.vipSeats);
         this.numberOfSeats = auditorium.numberOfSeats;
+        this.code = auditorium.code;
     }
 
     /**
@@ -56,7 +56,7 @@ public class Auditorium  extends AbstractDomainObject {
     }
     
     public Set<Long> getAllSeats() {
-        return LongStream.range(1, numberOfSeats+1).boxed().collect(Collectors.toSet());
+        return LongStream.range(1, numberOfSeats + 1).boxed().collect(Collectors.toSet());
     }
 
     public Set<Long> getVipSeats() {
@@ -67,15 +67,24 @@ public class Auditorium  extends AbstractDomainObject {
         this.vipSeats = vipSeats;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(name, code);
     }
 
     @Override
     public boolean equals(Object obj) {
         Auditorium other = (Auditorium) obj;
-        return super.equals(other) && Objects.equals(name, other.name);
+        return super.equals(other) && Objects.equals(name, other.name) &&
+                Objects.equals(code, other.code);
     }
 
 }

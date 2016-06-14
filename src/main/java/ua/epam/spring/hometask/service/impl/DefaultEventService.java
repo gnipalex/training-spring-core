@@ -1,14 +1,18 @@
 package ua.epam.spring.hometask.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
+import ua.epam.spring.hometask.dao.AuditoriumDao;
 import ua.epam.spring.hometask.dao.EventDao;
+import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.service.EventService;
 
 public class DefaultEventService implements EventService {
 
     private EventDao eventDao;
+    private AuditoriumDao auditoriumDao;
     
     @Override
     public Event save(Event object) {
@@ -34,9 +38,29 @@ public class DefaultEventService implements EventService {
     public Event getByName(String name) {
         return eventDao.getByName(name);
     }
+    
+    @Override
+    public void assignAuditorium(Event event, Auditorium auditorium,
+            LocalDateTime dateTime) {
+         event.assignAuditorium(dateTime, auditorium);
+         eventDao.save(event);
+    }
+
+    @Override
+    public boolean removeAuditoriumAssignment(Event event,
+            LocalDateTime dateTime) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAirDateTime(Event event, LocalDateTime dateTime) {
+        return false;
+    }
 
     public void setEventDao(EventDao eventDao) {
         this.eventDao = eventDao;
     }
+
+
     
 }

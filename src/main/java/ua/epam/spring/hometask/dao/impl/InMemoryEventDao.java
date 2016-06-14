@@ -1,65 +1,100 @@
 package ua.epam.spring.hometask.dao.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.NavigableMap;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
+import org.apache.commons.collections.CollectionUtils;
+
+import ua.epam.spring.hometask.dao.AuditoriumDao;
 import ua.epam.spring.hometask.dao.EventDao;
 import ua.epam.spring.hometask.dao.IdGenerator;
+import ua.epam.spring.hometask.dao.TicketDao;
+import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
 
 public class InMemoryEventDao implements EventDao {
 
-	private List<Event> events = new ArrayList<>();
-	
-	private IdGenerator idGenerator;
-	
-	@Override
-	public Event save(Event event) {
-		Event savedEvent = null;
-		if (eventExists(event)) {
-			savedEvent = getOriginalEvent(event).get();
-		} else {
-			savedEvent = new Event();
-			savedEvent.setId(idGenerator.generateNextId());
-			events.add(savedEvent);
-		}
- 		return null;
-	}
+    private List<Event> events = new ArrayList<>();
 
-	private Optional<Event> getOriginalEvent(Event event) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    private IdGenerator idGenerator;
+    private AuditoriumDao auditoriumDao;
+    private TicketDao ticketDao;
 
-	private boolean eventExists(Event event) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public Event save(Event event) {
+        Event savedEvent = null;
+        if (eventExists(event)) {
+            savedEvent = getOriginalEvent(event).get();
+        } else {
+            savedEvent = new Event();
+            savedEvent.setId(idGenerator.generateNextId());
+            events.add(savedEvent);
+        }
+        savedEvent.setAirDates(event.getAirDates());
+        savedEvent.setAuditoriums(event.getAuditoriums());
+        savedEvent.setBasePrice(event.getBasePrice());
+        savedEvent.setName(event.getName());
+        savedEvent.setRating(event.getRating());
+        return getEventCopy(savedEvent);
+    }
 
-	@Override
-	public void remove(Event object) {
-		// TODO Auto-generated method stub
-		
-	}
+    private Event getEventCopy(Event event) {
+        return new Event(event);
+    }
 
-	@Override
-	public Event getById(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    private Optional<Event> getOriginalEvent(Event event) {
+        return events.stream().filter(e -> e.getId() == event.getId()).findFirst();
+    }
 
-	@Override
-	public Collection<Event> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    private boolean eventExists(Event event) {
+        return getOriginalEvent(event).isPresent();
+    }
 
-	@Override
-	public Event getByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void remove(Event event) {
+        if (!eventExists(event)) {
+            throw new IllegalArgumentException("event doesn't exist");
+        }
+        if (ticketsPresentForEvent(event)) {
+            throw new IllegalStateException("event can not be deleted as there are tickets for this event");
+        }
+        events.remove(event);
+    }
+    
+    private boolean ticketsPresentForEvent(Event event) {
+        return CollectionUtils.isNotEmpty(ticketDao.getTicketsForEvent(event));
+    }
+
+    @Override
+    public Event getById(long id) {
+        return events.stream().filter(e -> e.getId() == id).findFirst()
+                .map(this::getEventCopy).orElse(null);
+    }
+
+    @Override
+    public Collection<Event> getAll() {
+        return events.stream().map(this::getEventCopy).collect(Collectors.toList());
+    }
+
+    @Override
+    public Event getByName(String name) {
+        return events.stream().filter(e -> Objects.equals(e.getName(), name))
+                .findFirst().map(this::getEventCopy).orElse(null);
+    }
+
+    @Override
+    public NavigableMap<LocalDateTime, Auditorium> getAuditoriumAssignments(Event event) {
+        return event.getAuditoriums().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), 
+                e -> auditoriumDao.getByCode(e.getValue()), 
+                (e1, e2) -> e1, 
+                TreeMap::new));
+    }
 
 }

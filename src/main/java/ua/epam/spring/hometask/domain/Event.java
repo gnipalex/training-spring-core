@@ -43,7 +43,7 @@ public class Event extends DomainObject {
      */
     public boolean assignAuditorium(LocalDateTime dateTime, Auditorium auditorium) {
         if (airDates.contains(dateTime)) {
-            auditoriums.put(dateTime, auditorium);
+            auditoriums.put(dateTime, auditorium.getCode());
             return true;
         } else {
             return false;
@@ -87,7 +87,7 @@ public class Event extends DomainObject {
     public boolean addAirDateTime(LocalDateTime dateTime, Auditorium auditorium) {
         boolean result = airDates.add(dateTime);
         if (result) {
-            auditoriums.put(dateTime, auditorium);
+            auditoriums.put(dateTime, auditorium.getCode());
         }
         return result;
     }
@@ -176,12 +176,12 @@ public class Event extends DomainObject {
     public void setRating(EventRating rating) {
         this.rating = rating;
     }
-
-    public NavigableMap<LocalDateTime, Auditorium> getAuditoriums() {
+    
+    public NavigableMap<LocalDateTime, String> getAuditoriums() {
         return auditoriums;
     }
 
-    public void setAuditoriums(NavigableMap<LocalDateTime, Auditorium> auditoriums) {
+    public void setAuditoriums(NavigableMap<LocalDateTime, String> auditoriums) {
         this.auditoriums = auditoriums;
     }
 

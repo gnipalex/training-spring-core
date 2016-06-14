@@ -109,7 +109,14 @@ public class InMemoryTicketDao implements TicketDao {
 
 	@Override
 	public Set<Ticket> getTicketsForOrderEntry(OrderEntry orderEntry) {
-		return null;
+	    return tickets.stream().filter(t -> t.getOrderEntryId() == orderEntry.getId())
+	            .map(this::getTicketCopy).collect(Collectors.toSet());
 	}
+
+    @Override
+    public Set<Ticket> getTicketsForEvent(Event event) {
+        return tickets.stream().filter(t -> ticketsForEvent(t, event))
+                .map(this::getTicketCopy).collect(Collectors.toSet());
+    }
 
 }

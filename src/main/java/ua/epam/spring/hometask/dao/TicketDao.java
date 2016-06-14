@@ -14,6 +14,8 @@ public interface TicketDao extends DomainObjectDao<Ticket> {
     
     Set<Ticket> getTicketsForEventAndDateTime(Event event, LocalDateTime dateTime);
     
+    Set<Ticket> getTicketsForEvent(Event event);
+    
 //    boolean doesBookingExist(Ticket ticket);
     
     Set<Ticket> getTicketsForOrderEntry(OrderEntry orderEntry);

@@ -8,5 +8,5 @@ import ua.epam.spring.hometask.domain.User;
 public interface OrderDao extends DomainObjectDao<Order> {
 	
 	Set<Order> getOrdersForUser(User user);
-	
+
 }
