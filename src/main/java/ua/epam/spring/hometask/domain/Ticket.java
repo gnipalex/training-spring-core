@@ -6,34 +6,24 @@ import java.util.Objects;
 /**
  * @author Yuriy_Tkach
  */
-public class Ticket extends DomainObject implements Comparable<Ticket> {
+public class Ticket extends DomainObject { //implements Comparable<Ticket> {
 
-    private User user;
-    private Event event;
     private LocalDateTime dateTime;
     private long seat;
+//    private long userId;
+    private long orderEntryId;
+    private long eventId;
+    
+    public Ticket() {
+    }
     
     public Ticket(Ticket ticket) {
         super(ticket);
         this.dateTime = ticket.dateTime;
-//        this.user = ticket.user;
-//        this.event = ticket.event;
         this.seat = ticket.seat;
-    }
-
-    public Ticket(User user, Event event, Auditorium auditorium, LocalDateTime dateTime, long seat) {
-        this.user = user;
-        this.event = event;
-        this.dateTime = dateTime;
-        this.seat = seat;
-    }
-
-//    public User getUser() {
-//        return user;
-//    }
-
-    public Event getEvent() {
-        return event;
+        this.eventId = ticket.eventId;
+//        this.userId = ticket.userId;
+        this.orderEntryId = ticket.orderEntryId;
     }
 
     public LocalDateTime getDateTime() {
@@ -48,45 +38,72 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
 //        this.user = user;
 //    }
 
-    public void setEvent(Event event) {
-        this.event = event;
-    }
+//    public void setEvent(Event event) {
+//        this.event = event;
+//    }
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
-    public void setSeat(long seat) {
+//    public long getUserId() {
+//		return userId;
+//	}
+//
+//	public void setUserId(long userId) {
+//		this.userId = userId;
+//	}
+
+	public long getEventId() {
+		return eventId;
+	}
+
+	public void setEventId(long eventId) {
+		this.eventId = eventId;
+	}
+
+	public void setSeat(long seat) {
         this.seat = seat;
     }
+	
+	
 
-    @Override
+    public long getOrderEntryId() {
+		return orderEntryId;
+	}
+
+	public void setOrderEntryId(long orderEntryId) {
+		this.orderEntryId = orderEntryId;
+	}
+
+	@Override
     public int hashCode() {
-        return Objects.hash(dateTime, event, seat);
+        return Objects.hash(dateTime, eventId, seat);
     }
 
     @Override
     public boolean equals(Object obj) {
         Ticket other = (Ticket) obj;
-        return super.equals(other) && Objects.equals(dateTime, other.dateTime) &&
-                Objects.equals(event, other.event) && 
-                Objects.equals(seat, other.seat);
+        return super.equals(other) && 
+        		Objects.equals(dateTime, other.dateTime) &&
+        		Objects.equals(seat, other.seat) &&
+                Objects.equals(eventId, other.eventId);
     }
 
-    @Override
-    public int compareTo(Ticket other) {
-        if (other == null) {
-            return 1;
-        }
-        int result = dateTime.compareTo(other.getDateTime());
-
-        if (result == 0) {
-            result = event.getName().compareTo(other.getEvent().getName());
-        }
-        if (result == 0) {
-            result = Long.compare(seat, other.getSeat());
-        }
-        return result;
-    }
+//    @Override
+//    public int compareTo(Ticket other) {
+//        if (other == null) {
+//            return 1;
+//        }
+//        int result = dateTime.compareTo(other.getDateTime());
+//
+//        if (result == 0) {
+//            result = event.getName().compareTo(other.getEvent().getName());
+//        }
+//        if (result == 0) {
+//            result = Long.compare(seat, other.getSeat());
+//        }
+//        return result;
+//    }
 
 }

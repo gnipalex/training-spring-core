@@ -22,8 +22,8 @@ public class StaticTicketDao implements TicketDao, OriginalDomainObjectProvider<
     private Set<Ticket> tickets = new HashSet<>();
     
     private OriginalDomainObjectProvider<User> originalUserObjectProvider;
-    private OriginalDomainObjectProvider<Event> originalEventObjectProvider
-    ;
+    private OriginalDomainObjectProvider<Event> originalEventObjectProvider;
+
     private EventDao eventDao;
     private UserDao userDao;
     

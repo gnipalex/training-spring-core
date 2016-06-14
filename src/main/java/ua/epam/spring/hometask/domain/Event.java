@@ -17,7 +17,7 @@ public class Event extends DomainObject {
     private NavigableSet<LocalDateTime> airDates = new TreeSet<>();
     private double basePrice;
     private EventRating rating;
-    private NavigableMap<LocalDateTime, Auditorium> auditoriums = new TreeMap<>();
+    private NavigableMap<LocalDateTime, String> auditoriums = new TreeMap<>();
 
     public Event() {
     }

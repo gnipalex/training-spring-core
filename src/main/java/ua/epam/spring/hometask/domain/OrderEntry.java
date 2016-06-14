@@ -1,14 +1,13 @@
 package ua.epam.spring.hometask.domain;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class OrderEntry extends DomainObject {
 
-    private Set<Ticket> tickets = new HashSet<>();
+//    private Set<Ticket> tickets = new HashSet<>();
     private double basePrice;
     private double discount;
+    private long orderId;
     
     public OrderEntry() {
     }
@@ -17,15 +16,16 @@ public class OrderEntry extends DomainObject {
         super(orderEntry);
         this.basePrice = orderEntry.getBasePrice();
         this.discount = orderEntry.discount;
+        this.orderId = orderEntry.orderId;
     }
     
-    public Set<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(Set<Ticket> tickets) {
-        this.tickets = tickets;
-    }
+//    public Set<Ticket> getTickets() {
+//        return tickets;
+//    }
+//
+//    public void setTickets(Set<Ticket> tickets) {
+//        this.tickets = tickets;
+//    }
 
     public double getBasePrice() {
         return basePrice;
@@ -42,16 +42,27 @@ public class OrderEntry extends DomainObject {
     public void setDiscount(double discount) {
         this.discount = discount;
     }
-    
-    @Override
+
+	public long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(long orderId) {
+		this.orderId = orderId;
+	}
+
+	@Override
     public int hashCode() {
-        return Objects.hash(tickets, basePrice, discount);
+        return Objects.hash(orderId, basePrice, discount);
     }
     
     @Override
     public boolean equals(Object obj) {
         OrderEntry other = (OrderEntry) obj;
-        return super.equals(other) && Objects.equals(tickets, other.tickets) && 
+        return super.equals(other) && 
+        		// do we need this
+        		Objects.equals(getId(), other.getId()) &&
+        		Objects.equals(orderId, other.orderId) &&
                 Objects.equals(basePrice, other.basePrice) && 
                 Objects.equals(discount, other.discount);
     }

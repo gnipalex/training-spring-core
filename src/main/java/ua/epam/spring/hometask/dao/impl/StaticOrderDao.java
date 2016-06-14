@@ -11,6 +11,7 @@ import ua.epam.spring.hometask.dao.OrderEntryDao;
 import ua.epam.spring.hometask.dao.OriginalDomainObjectProvider;
 import ua.epam.spring.hometask.domain.Order;
 import ua.epam.spring.hometask.domain.OrderEntry;
+import ua.epam.spring.hometask.domain.User;
 
 public class StaticOrderDao implements OrderDao, OriginalDomainObjectProvider<Order> {
 
@@ -75,5 +76,11 @@ public class StaticOrderDao implements OrderDao, OriginalDomainObjectProvider<Or
     public Order getOriginalDomainObject(Order object) {
         return orders.stream().filter(o -> o.getId() == object.getId()).findFirst().orElse(null);
     }
+
+	@Override
+	public Set<Order> getOrdersForUser(User user) {
+		orders.stream().filter(o -> o.get
+		return null;
+	}
 
 }

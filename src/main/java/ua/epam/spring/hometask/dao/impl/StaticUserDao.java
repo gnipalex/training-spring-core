@@ -1,5 +1,7 @@
 package ua.epam.spring.hometask.dao.impl;
 
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,6 +15,7 @@ import ua.epam.spring.hometask.dao.IdGenerator;
 import ua.epam.spring.hometask.dao.OriginalDomainObjectProvider;
 import ua.epam.spring.hometask.dao.TicketDao;
 import ua.epam.spring.hometask.dao.UserDao;
+import ua.epam.spring.hometask.domain.Order;
 import ua.epam.spring.hometask.domain.Ticket;
 import ua.epam.spring.hometask.domain.User;
 
@@ -21,6 +24,7 @@ public class StaticUserDao implements UserDao, OriginalDomainObjectProvider<User
     private Set<User> users = new HashSet<>();
     
     private OriginalDomainObjectProvider<Ticket> originalTicketObjectProvider;
+    private OriginalDomainObjectProvider<Order> originalOrderObjectProvider;
     private TicketDao ticketDao;
     private IdGenerator userIdGenerator;
     
@@ -89,6 +93,10 @@ public class StaticUserDao implements UserDao, OriginalDomainObjectProvider<User
         }
 //        removeUserFromTickets(user);
         users.remove(originalUser);
+    }
+    
+    private void removeUserFromOrders(User user) {
+    	originalOrderObjectProvider.g
     }
 
 //    private void removeUserFromTickets(User user) {

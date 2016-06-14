@@ -15,7 +15,7 @@ public class DomainObject extends AbstractDomainObject {
         this.id = domainObject.id;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

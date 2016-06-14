@@ -1,5 +1,6 @@
 package ua.epam.spring.hometask.dao.impl;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +18,18 @@ public class StaticOrderEntryDao implements OrderEntryDao,
     private Set<OrderEntry> orderEntries = new HashSet<>();
 
     private TicketDao ticketDao;
+    
+    private Set<SimpleEntry<Long, Long>> orderEntryToTicketsRelation = new HashSet<>();
 
     @Override
-    public OrderEntry save(OrderEntry object) {
+    public OrderEntry save(OrderEntry orderEntry) {
+    	if (orderEntries.contains(orderEntry)) {
+    		orderEntry.getTickets();
+    	}
         return null;
     }
+    
+    private Set<Ticket> getOriginalTickets
 
     @Override
     public void remove(OrderEntry object) {
