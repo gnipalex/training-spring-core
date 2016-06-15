@@ -1,11 +1,8 @@
 package ua.epam.spring.hometask.service;
 
-import java.time.LocalDateTime;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
 
 /**
@@ -41,12 +38,5 @@ public interface EventService extends AbstractDomainObjectService<Event> {
      * @return Set of events
      */
 //     @Nonnull Set<Event> getNextEvents(@Nonnull LocalDateTime to);
-    
-      
-    void assignAuditorium(Event event, Auditorium auditorium, LocalDateTime dateTime);
-    
-    boolean removeAuditoriumAssignment(Event event, LocalDateTime dateTime);
-    
-    boolean removeAirDateTime(Event event, LocalDateTime dateTime);
-
+   
 }

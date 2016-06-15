@@ -87,7 +87,7 @@ public class InMemoryOrderEntryDao implements OrderEntryDao {
 	@Override
 	public Set<OrderEntry> getOrderEntriesForOrder(Order order) {
 		return entries.stream().filter(oe -> Objects.equals(oe.getOrderId(), order.getId()))
-				//.map(this::getOrderEntryCopy)
+				.map(this::getOrderEntryCopy)
 				.collect(Collectors.toSet());
 	}
 	

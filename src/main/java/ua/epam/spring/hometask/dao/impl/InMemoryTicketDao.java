@@ -40,7 +40,6 @@ public class InMemoryTicketDao implements TicketDao {
 		savedTicket.setDateTime(ticket.getDateTime());
 		savedTicket.setSeat(ticket.getSeat());
 		savedTicket.setEventId(ticket.getEventId());
-//		savedTicket.setUserId(ticket.getUserId());
 		savedTicket.setOrderEntryId(ticket.getOrderEntryId());
 		return getTicketCopy(savedTicket);
 	}
@@ -102,11 +101,6 @@ public class InMemoryTicketDao implements TicketDao {
         return Objects.equals(ticket.getDateTime(), dateTime);
     }
 
-//	@Override
-//	public boolean doesBookingExist(Ticket ticket) {
-//		return false;
-//	}
-
 	@Override
 	public Set<Ticket> getTicketsForOrderEntry(OrderEntry orderEntry) {
 	    return tickets.stream().filter(t -> t.getOrderEntryId() == orderEntry.getId())
@@ -118,5 +112,15 @@ public class InMemoryTicketDao implements TicketDao {
         return tickets.stream().filter(t -> ticketsForEvent(t, event))
                 .map(this::getTicketCopy).collect(Collectors.toSet());
     }
+
+	@Override
+	public boolean doesBookingExist(Ticket ticket) {
+		return tickets.contains(ticket);
+//		return tickets.stream()
+//				.filter(t -> ticketsForDate(t, ticket.getDateTime()))
+//				.filter(t -> t.getEventId() == ticket.getEventId())
+//				.filter(t -> t.getSeat() == ticket.getSeat())
+//				.findAny().isPresent();
+	}
 
 }

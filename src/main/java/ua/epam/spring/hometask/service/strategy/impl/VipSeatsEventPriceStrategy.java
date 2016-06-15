@@ -1,29 +1,32 @@
 package ua.epam.spring.hometask.service.strategy.impl;
 
-import java.util.Set;
-
-import org.apache.commons.collections.CollectionUtils;
-
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
-import ua.epam.spring.hometask.service.strategy.EventPriceStrategy;
+import ua.epam.spring.hometask.service.strategy.EventAdditionalPriceStrategy;
 
-public class VipSeatsEventPriceStrategy implements EventPriceStrategy {
+public class VipSeatsEventPriceStrategy implements EventAdditionalPriceStrategy {
 
-    private double multiplier;
+    private double vipSeatPriceMultiplier;
     
     @Override
-    public double getPrice(Event event, Auditorium auditorium, Set<Long> seats) {
-        int vipSeatsCount = CollectionUtils.intersection(auditorium.getVipSeats(), seats).size();
-        return vipSeatsCount * getVipPrice(event.getBasePrice());
+    public double getAdditionaPrice(Event event, Auditorium auditorium, long seat) {
+    	if (isVipSeat(auditorium, seat)) {
+    		return getVipAdditionalPrice(event.getBasePrice());
+    	}
+    	return 0;
     }
     
-    private double getVipPrice(double basePrice) {
-        return multiplier * basePrice;
+    private boolean isVipSeat(Auditorium auditorium, long seat) {
+    	return auditorium.getVipSeats().contains(seat);
+    }
+    
+    private double getVipAdditionalPrice(double basePrice) {
+        return Math.abs(vipSeatPriceMultiplier * basePrice - basePrice);
     }
 
-    public void setMultiplier(double multiplier) {
-        this.multiplier = multiplier;
-    }
+	public void setVipSeatPriceMultiplier(double vipSeatPriceMultiplier) {
+		this.vipSeatPriceMultiplier = vipSeatPriceMultiplier;
+	}
+
     
 }

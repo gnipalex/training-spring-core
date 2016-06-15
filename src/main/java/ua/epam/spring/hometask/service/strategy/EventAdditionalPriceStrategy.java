@@ -1,12 +1,10 @@
 package ua.epam.spring.hometask.service.strategy;
 
-import java.util.Set;
-
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
 
-public interface EventPriceStrategy {
+public interface EventAdditionalPriceStrategy {
     
-    double getPrice(Event event, Auditorium auditorium, Set<Long> seats);
+    double getAdditionaPrice(Event event, Auditorium auditorium, long seat);
     
 }

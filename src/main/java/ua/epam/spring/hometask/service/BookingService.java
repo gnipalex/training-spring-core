@@ -52,5 +52,7 @@ public interface BookingService {
      * @return set of all purchased tickets
      */
     @Nonnull Set<Ticket> getPurchasedTicketsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime);
+    
+    boolean doesBookingPresent(Event event, LocalDateTime dateTime, long seat);
 
 }

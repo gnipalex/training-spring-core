@@ -7,6 +7,6 @@ import ua.epam.spring.hometask.domain.User;
 
 public interface DiscountStrategy {
     
-    byte getDiscount(User user, Event event, LocalDateTime airDateTime, long numberOfTickets);
+    double getDiscount(User user, Event event, LocalDateTime airDateTime, long numberOfTickets);
 
 }
