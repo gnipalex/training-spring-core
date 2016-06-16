@@ -10,23 +10,12 @@
         http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <alias name="defaultDiscountService" alias="discountService" />
-    <bean id="defaultDiscountService" class="ua.epam.spring.hometask.service.impl.DefaultDiscountService">
-        <property name="orderDao" ref="orderDao"/>
-        <property name="ticketDao" ref="ticketDao" />
-        <property name="eventDao" ref="eventDao" />
-        <property name="userDao" ref="userDao" />
-        <property name="discountStrategies" ref="discountStrategies" />
-    </bean>
+    <import resource="application-context.xml" />
     
     <util:list id="discountStrategies">
         <bean class="ua.epam.spring.hometask.service.strategy.impl.BirthdayDiscountStrategy" 
                         p:withinDays="5" 
                         p:discountValue="5" />
-        <bean class="ua.epam.spring.hometask.service.strategy.impl.EveryXTicketDiscountStrategy"
-                p:number="10" 
-                p:discountPercent="50" />
     </util:list>
         
 </beans>
-        

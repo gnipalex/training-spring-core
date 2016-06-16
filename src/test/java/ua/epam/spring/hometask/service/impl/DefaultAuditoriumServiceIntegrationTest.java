@@ -32,5 +32,7 @@ public class DefaultAuditoriumServiceIntegrationTest extends AbstractServiceInte
 		Set<Auditorium> auditoriums = auditoriumService.getAll();
 		assertThat(auditoriums).isNotEmpty();
 	}
+	
+	
 
 }

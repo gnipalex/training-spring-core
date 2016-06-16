@@ -45,6 +45,15 @@
     <bean id="auditoriumService" class="ua.epam.spring.hometask.service.impl.DefaultAuditoriumService">
         <property name="auditoriumDao" ref="auditoriumDao" />
     </bean>
+    
+    
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <list merge="true">
+                <bean class="ua.epam.spring.hometask.util.StringToLongSetConverter" />
+            </list>
+        </property>
+    </bean>
 
         
 </beans>
