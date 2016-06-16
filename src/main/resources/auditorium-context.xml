@@ -39,7 +39,7 @@
     
     <bean id="inMemoryAuditoriumDao" name="auditoriumDao" init-method="checkAuditoriumsProvided" 
             class="ua.epam.spring.hometask.dao.impl.InMemoryAuditoriumDao">
-        <property name="auditoriums" ref="auditoriumList" />
+        <constructor-arg ref="auditoriumList"></constructor-arg>
     </bean>
     
     <bean id="auditoriumService" class="ua.epam.spring.hometask.service.impl.DefaultAuditoriumService">
