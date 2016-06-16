@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import ua.epam.spring.hometask.dao.IdGenerator;
@@ -46,7 +45,6 @@ public class InMemoryOrderDao implements OrderDao {
 			throw new IllegalArgumentException("order does not exist");
 		}
 		orderEntryDao.removeOrderEntriesForOrder(object);
-		// check equals
 		orders.remove(object);
 	}
 
@@ -70,9 +68,17 @@ public class InMemoryOrderDao implements OrderDao {
 	}
 
 	@Override
-	public Set<Order> getOrdersForUser(User user) {
+	public Collection<Order> getOrdersForUser(User user) {
 		return orders.stream().filter(o -> Objects.equals(o.getUserId(), user.getId()))
 				.map(this::getOrderCopy).collect(Collectors.toSet());
+	}
+
+	public void setOrderEntryDao(OrderEntryDao orderEntryDao) {
+		this.orderEntryDao = orderEntryDao;
+	}
+
+	public void setIdGenerator(IdGenerator idGenerator) {
+		this.idGenerator = idGenerator;
 	}
 
 }

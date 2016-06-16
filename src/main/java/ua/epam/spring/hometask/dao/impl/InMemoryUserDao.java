@@ -69,5 +69,9 @@ public class InMemoryUserDao implements UserDao  {
 	public User getUserByEmail(String email) {
 		return users.stream().filter(u -> Objects.equals(u.getEmail(), email)).findFirst().map(this::getCopy).orElse(null);
 	}
+
+	public void setIdGenerator(IdGenerator idGenerator) {
+		this.idGenerator = idGenerator;
+	}
 	
 }

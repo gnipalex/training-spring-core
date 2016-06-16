@@ -97,4 +97,16 @@ public class InMemoryEventDao implements EventDao {
                 TreeMap::new));
     }
 
+	public void setIdGenerator(IdGenerator idGenerator) {
+		this.idGenerator = idGenerator;
+	}
+
+	public void setAuditoriumDao(AuditoriumDao auditoriumDao) {
+		this.auditoriumDao = auditoriumDao;
+	}
+
+	public void setTicketDao(TicketDao ticketDao) {
+		this.ticketDao = ticketDao;
+	}
+
 }

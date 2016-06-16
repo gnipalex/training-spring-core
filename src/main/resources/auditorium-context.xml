@@ -18,21 +18,33 @@
     
     <util:list id="auditoriumList">
         <bean class="ua.epam.spring.hometask.domain.Auditorium" 
+            p:code="${auditorium.1.code}"
             p:name="${auditorium.1.name}" 
             p:numberOfSeats="${auditorium.1.numberOfSeats}" 
             p:vipSeats="${auditorium.1.vipSeats}" />
             
         <bean class="ua.epam.spring.hometask.domain.Auditorium" 
+            p:code="${auditorium.2.code}"
             p:name="${auditorium.2.name}" 
             p:numberOfSeats="${auditorium.2.numberOfSeats}" 
             p:vipSeats="${auditorium.2.vipSeats}" />
             
         <bean class="ua.epam.spring.hometask.domain.Auditorium" 
+            p:code="${auditorium.3.code}"
             p:name="${auditorium.3.name}" 
             p:numberOfSeats="${auditorium.3.numberOfSeats}" 
             p:vipSeats="${auditorium.3.vipSeats}" />
             
     </util:list>
+    
+    <bean id="inMemoryAuditoriumDao" name="auditoriumDao" init-method="checkAuditoriumsProvided" 
+            class="ua.epam.spring.hometask.dao.impl.InMemoryAuditoriumDao">
+        <property name="auditoriums" ref="auditoriumList" />
+    </bean>
+    
+    <bean id="auditoriumService" class="ua.epam.spring.hometask.service.impl.DefaultAuditoriumService">
+        <property name="auditoriumDao" ref="auditoriumDao" />
+    </bean>
 
         
 </beans>

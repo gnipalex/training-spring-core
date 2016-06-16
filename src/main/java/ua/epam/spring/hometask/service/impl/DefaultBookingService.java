@@ -1,7 +1,10 @@
 package ua.epam.spring.hometask.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -9,34 +12,40 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 
 import ua.epam.spring.hometask.dao.EventDao;
+import ua.epam.spring.hometask.dao.OrderEntryDao;
 import ua.epam.spring.hometask.dao.TicketDao;
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
+import ua.epam.spring.hometask.domain.Order;
+import ua.epam.spring.hometask.domain.OrderEntry;
 import ua.epam.spring.hometask.domain.Ticket;
 import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.BookingService;
 import ua.epam.spring.hometask.service.DiscountService;
+import ua.epam.spring.hometask.service.OrderService;
 import ua.epam.spring.hometask.service.strategy.EventAdditionalPriceStrategy;
 
 public class DefaultBookingService implements BookingService {
 
     private TicketDao ticketDao;
+    private OrderEntryDao orderEntryDao;
+    private EventDao eventDao;
     private DiscountService discountService;
     private EventAdditionalPriceStrategy additionalPriceStrategy;
-    private EventDao eventDao;
+    private OrderService orderService;
     
     @Override
     public double getTicketsPrice(Event event, LocalDateTime dateTime,
             User user, Set<Long> seats) {
-        
         double totalPrice = getPriceForSeats(event, dateTime, seats);
-        
-        double totalDiscounts = discountService.getDiscount(user, event, dateTime, seats.size());
-        
-        return totalPrice;
+        double totalDiscounts = getDiscount(event, dateTime, user, seats);
+        return totalPrice - totalDiscounts;
     }
-    
-    
+
+	private double getDiscount(Event event, LocalDateTime dateTime, User user,
+			Set<Long> seats) {
+		return discountService.getDiscount(user, event, dateTime, seats.size());
+	}
      
     private double getPriceForSeats(Event event, LocalDateTime dateTime, Set<Long> seats) {
     	Auditorium auditorium = getAuditoriumByEventAndDate(event, dateTime);	
@@ -66,20 +75,47 @@ public class DefaultBookingService implements BookingService {
     	return auditorium;
     }
 
-//    private double getBasePrice(Event event, LocalDateTime dateTime, Set<Long> seats) {
-//        Auditorium auditorium = event.getAuditoriums().get(dateTime);
-//        double price = additionalPriceStrategy.getPrice(event, auditorium, seats) + ordinarySeatsPriceStrategy.getPrice(event, auditorium, seats);
-//        return price;
-//    }
-//    
-//    
-
     @Override
-    public void bookTickets(Set<Ticket> tickets) {
+    public Order bookTickets(User user, Set<Ticket> tickets) {
         checkIfAllSeatsAreFree(tickets);
-        tickets.forEach(ticket -> ticketDao.save(ticket));
+
+        Map<Long, Map<LocalDateTime, List<Ticket>>> ticketsGroupedByEventAndDate = groupByEventAndDate(tickets);
+        
+        List<OrderEntry> createdOrderEntries = new ArrayList<>();
+        
+        for (Entry<Long, Map<LocalDateTime, List<Ticket>>> ticketsGroupedByEvent : ticketsGroupedByEventAndDate.entrySet()) {
+        	Event event = eventDao.getById(ticketsGroupedByEvent.getKey()); 
+        	
+        	for (Entry<LocalDateTime, List<Ticket>> ticketsGroupedByDate : ticketsGroupedByEvent.getValue().entrySet()) {
+        		OrderEntry newOrderEntry = createOrderEntry();
+        		
+        		Set<Ticket> savedTickets = saveTickets(ticketsGroupedByDate.getValue(), newOrderEntry);
+
+        		Set<Long> seats = savedTickets.stream().map(Ticket::getSeat).collect(Collectors.toSet());
+        		LocalDateTime dateTime = ticketsGroupedByDate.getKey();
+        		newOrderEntry.setBasePrice(getPriceForSeats(event, dateTime, seats));
+        		newOrderEntry.setDiscount(getDiscount(event, dateTime, user, seats));
+        		
+        		createdOrderEntries.add(newOrderEntry);
+        	}
+        }
+        
+        return orderService.createOrder(user, createdOrderEntries);
     }
+
+	private OrderEntry createOrderEntry() {
+		return orderEntryDao.save(new OrderEntry());
+	}
+
+	private Set<Ticket> saveTickets(List<Ticket> ticketsToSave, OrderEntry newOrderEntry) {
+		return ticketDao.saveTickets(newOrderEntry, ticketsToSave);
+	}
     
+    private Map<Long, Map<LocalDateTime, List<Ticket>>> groupByEventAndDate(Set<Ticket> tickets) {
+		return tickets.stream().collect(Collectors.groupingBy(Ticket::getEventId, 
+				Collectors.groupingBy(Ticket::getDateTime)));
+	}
+
     private void checkIfAllSeatsAreFree(Set<Ticket> tickets) {
         Set<Ticket> conflictTickets = tickets.stream().filter(ticketDao::doesBookingExist).collect(Collectors.toSet());
         if (CollectionUtils.isNotEmpty(conflictTickets)) {
@@ -87,28 +123,11 @@ public class DefaultBookingService implements BookingService {
         }
     }
     
-    
-    
 	@Override
 	public boolean doesBookingPresent(Event event, LocalDateTime dateTime, long seat) {
 		Set<Ticket> tickets = ticketDao.getTicketsForEventAndDateTime(event, dateTime);
 		return tickets.stream().anyMatch(t -> Objects.equals(t.getSeat(), seat));
 	}
-
-//    private void checkIfSeatIsFree(Ticket ticket) {
-//        Event event = ticket.getEvent();
-//        LocalDateTime dateTime = ticket.getDateTime();
-//        Set<Ticket> bookedTickets = ticketDao.getTicketsForEventAndDateTime(event, dateTime);
-//        if (bookedTickets.contains(ticket.getSeat())) {
-//            throw new IllegalStateException(getSeatIsBookedErrorMessage(ticket));
-//        }
-//    }
-//    
-//    private String getSeatIsBookedErrorMessage(Ticket ticket) {
-//        DateFormat dateFormat = DateFormat.getDateTimeInstance();
-//        return String.format("seat %d for event '%s' on date '%s' is already booked", ticket.getSeat(), 
-//                ticket.getEvent().getName(), dateFormat.format(ticket.getDateTime()));
-//    }
 
     @Override
     public Set<Ticket> getPurchasedTicketsForEvent(Event event,
@@ -124,6 +143,21 @@ public class DefaultBookingService implements BookingService {
         this.discountService = discountService;
     }
 
+	public void setOrderEntryDao(OrderEntryDao orderEntryDao) {
+		this.orderEntryDao = orderEntryDao;
+	}
 
-    
+	public void setEventDao(EventDao eventDao) {
+		this.eventDao = eventDao;
+	}
+
+	public void setAdditionalPriceStrategy(
+			EventAdditionalPriceStrategy additionalPriceStrategy) {
+		this.additionalPriceStrategy = additionalPriceStrategy;
+	}
+
+	public void setOrderService(OrderService orderService) {
+		this.orderService = orderService;
+	}
+
 }

@@ -61,7 +61,6 @@ public class InMemoryTicketDao implements TicketDao {
 		if (!ticketExists(ticket)) {
 			throw new IllegalArgumentException("ticket does not exist");
 		}
-		// check equals
 		tickets.remove(ticket);
 	}
 
@@ -77,7 +76,7 @@ public class InMemoryTicketDao implements TicketDao {
 
 	@Override
 	public Set<Ticket> getTicketsForUser(User user) {
-		Set<Order> allOrdersForUser = orderDao.getOrdersForUser(user);
+		Collection<Order> allOrdersForUser = orderDao.getOrdersForUser(user);
 		return allOrdersForUser.stream()
 				.map(orderEntryDao::getOrderEntriesForOrder)
 				.flatMap(Set::stream).map(this::getTicketsForOrderEntry)
@@ -116,11 +115,24 @@ public class InMemoryTicketDao implements TicketDao {
 	@Override
 	public boolean doesBookingExist(Ticket ticket) {
 		return tickets.contains(ticket);
-//		return tickets.stream()
-//				.filter(t -> ticketsForDate(t, ticket.getDateTime()))
-//				.filter(t -> t.getEventId() == ticket.getEventId())
-//				.filter(t -> t.getSeat() == ticket.getSeat())
-//				.findAny().isPresent();
 	}
 
+	@Override
+	public Set<Ticket> saveTickets(OrderEntry orderEntry, Collection<Ticket> tickets) {
+		tickets.stream().forEach(t -> t.setOrderEntryId(orderEntry.getId()));
+		return tickets.stream().map(this::save).collect(Collectors.toSet());
+	}
+
+	public void setIdGenerator(IdGenerator idGenerator) {
+		this.idGenerator = idGenerator;
+	}
+
+	public void setOrderEntryDao(OrderEntryDao orderEntryDao) {
+		this.orderEntryDao = orderEntryDao;
+	}
+
+	public void setOrderDao(OrderDao orderDao) {
+		this.orderDao = orderDao;
+	}
+	
 }

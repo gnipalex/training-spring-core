@@ -7,10 +7,8 @@ import ua.epam.spring.hometask.domain.OrderEntry;
 
 public interface OrderEntryDao extends DomainObjectDao<OrderEntry> {
     
-    Set<OrderEntry> saveAll(Set<OrderEntry> orderEntry);
-
 	void removeOrderEntriesForOrder(Order order);
 	
 	Set<OrderEntry> getOrderEntriesForOrder(Order order);
-    
+	 
 }

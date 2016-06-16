@@ -7,8 +7,12 @@ import ua.epam.spring.hometask.service.strategy.EventAdditionalPriceStrategy;
 public class VipSeatsEventPriceStrategy implements EventAdditionalPriceStrategy {
 
     private double vipSeatPriceMultiplier;
-    
-    @Override
+
+    public VipSeatsEventPriceStrategy(double vipSeatPriceMultiplier) {
+		this.vipSeatPriceMultiplier = vipSeatPriceMultiplier;
+	}
+
+	@Override
     public double getAdditionaPrice(Event event, Auditorium auditorium, long seat) {
     	if (isVipSeat(auditorium, seat)) {
     		return getVipAdditionalPrice(event.getBasePrice());
@@ -23,10 +27,5 @@ public class VipSeatsEventPriceStrategy implements EventAdditionalPriceStrategy 
     private double getVipAdditionalPrice(double basePrice) {
         return Math.abs(vipSeatPriceMultiplier * basePrice - basePrice);
     }
-
-	public void setVipSeatPriceMultiplier(double vipSeatPriceMultiplier) {
-		this.vipSeatPriceMultiplier = vipSeatPriceMultiplier;
-	}
-
     
 }

@@ -57,7 +57,6 @@ public class InMemoryOrderEntryDao implements OrderEntryDao {
 		}
 		entries.remove(object);
 	}
-	
 
 	@Override
 	public OrderEntry getById(long id) {
@@ -70,13 +69,6 @@ public class InMemoryOrderEntryDao implements OrderEntryDao {
 				.map(this::getOrderEntryCopy).collect(Collectors.toSet());
 	}
 
-	// do I need this ?
-	@Override
-	public Set<OrderEntry> saveAll(Set<OrderEntry> orderEntry) {
-		return null;
-	}
-
-	// move this method to OrderDao
 	@Override
 	public void removeOrderEntriesForOrder(Order order) {
 		Set<OrderEntry> orderEntriesForOrder = getOrderEntriesForOrder(order);
@@ -95,6 +87,13 @@ public class InMemoryOrderEntryDao implements OrderEntryDao {
 		Set<Ticket> ticketsForOrderEntry = ticketDao.getTicketsForOrderEntry(orderEntry);
 		ticketsForOrderEntry.forEach(ticketDao::remove);
 	}
-	
 
+	public void setTicketDao(TicketDao ticketDao) {
+		this.ticketDao = ticketDao;
+	}
+
+	public void setIdGenerator(IdGenerator idGenerator) {
+		this.idGenerator = idGenerator;
+	}
+	
 }

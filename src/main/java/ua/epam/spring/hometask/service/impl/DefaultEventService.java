@@ -16,7 +16,7 @@ public class DefaultEventService implements EventService {
     	Objects.requireNonNull(event);
         return eventDao.save(event);
     }
-
+    
     @Override
     public void remove(Event event) {
     	Objects.requireNonNull(event);

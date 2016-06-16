@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import ua.epam.spring.hometask.domain.Event;
+import ua.epam.spring.hometask.domain.Order;
 import ua.epam.spring.hometask.domain.Ticket;
 import ua.epam.spring.hometask.domain.User;
 
@@ -34,13 +35,14 @@ public interface BookingService {
             @Nonnull Set<Long> seats);
 
     /**
-     * Books tickets in internal system. If user is not
+     * Books tickets for provided user in internal system. If user is not
      * <code>null</code> in a ticket then booked tickets are saved with it
      * 
      * @param tickets
      *            Set of tickets
+     * @return Order - created order
      */
-     void bookTickets(@Nonnull Set<Ticket> tickets);
+     Order bookTickets(@Nonnull User user, @Nonnull Set<Ticket> tickets);
 
     /**
      * Getting all purchased tickets for event on specific air date and time

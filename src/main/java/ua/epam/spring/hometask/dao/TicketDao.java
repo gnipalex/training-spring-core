@@ -1,6 +1,7 @@
 package ua.epam.spring.hometask.dao;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Set;
 
 import ua.epam.spring.hometask.domain.Event;
@@ -19,5 +20,7 @@ public interface TicketDao extends DomainObjectDao<Ticket> {
     boolean doesBookingExist(Ticket ticket);
     
     Set<Ticket> getTicketsForOrderEntry(OrderEntry orderEntry);
+    
+    Set<Ticket> saveTickets(OrderEntry orderEntry, Collection<Ticket> tickets);
     
 }

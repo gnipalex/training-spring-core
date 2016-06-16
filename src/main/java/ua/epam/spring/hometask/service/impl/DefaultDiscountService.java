@@ -84,7 +84,6 @@ public class DefaultDiscountService implements DiscountService {
 				Collectors.groupingBy(Ticket::getDateTime)));
 	}
 	
-	// move to user dao
 	private User getUserForOrderEntry(OrderEntry orderEntry) {
 		Order order = orderDao.getById(orderEntry.getOrderId());
 		return userDao.getById(order.getUserId());
@@ -93,5 +92,21 @@ public class DefaultDiscountService implements DiscountService {
     public void setDiscountStrategies(List<DiscountStrategy> discountStrategies) {
         this.discountStrategies = discountStrategies;
     }
-    
+
+	public void setOrderDao(OrderDao orderDao) {
+		this.orderDao = orderDao;
+	}
+
+	public void setTicketDao(TicketDao ticketDao) {
+		this.ticketDao = ticketDao;
+	}
+
+	public void setEventDao(EventDao eventDao) {
+		this.eventDao = eventDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
 }
