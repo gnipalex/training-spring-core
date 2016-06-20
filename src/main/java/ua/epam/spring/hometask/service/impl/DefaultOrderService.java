@@ -55,6 +55,11 @@ public class DefaultOrderService implements OrderService {
 		return orderEntries.stream().mapToDouble(this::getPriceWithDiscount).sum();
 	}
 	
+    @Override
+    public Set<OrderEntry> getOrderEntries(Order order) {
+        return orderEntryDao.getOrderEntriesForOrder(order);
+    }
+	
 	private double getPriceWithDiscount(OrderEntry orderEntry) {
 		return orderEntry.getBasePrice() - orderEntry.getDiscount();
 	}
@@ -66,5 +71,6 @@ public class DefaultOrderService implements OrderService {
 	public void setOrderEntryDao(OrderEntryDao orderEntryDao) {
 		this.orderEntryDao = orderEntryDao;
 	}
+
 
 }

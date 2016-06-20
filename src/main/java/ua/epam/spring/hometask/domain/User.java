@@ -15,7 +15,6 @@ public class User extends DomainObject {
     private String lastName;
     private String email;
     private double balance;
-    private NavigableSet<Ticket> tickets = new TreeSet<>();
     
     public User() {
     }
@@ -51,14 +50,6 @@ public class User extends DomainObject {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public NavigableSet<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(NavigableSet<Ticket> tickets) {
-        this.tickets = tickets;
     }
     
     public LocalDateTime getBirthday() {

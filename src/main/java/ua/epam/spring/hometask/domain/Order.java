@@ -5,8 +5,6 @@ import java.util.Objects;
 
 public class Order extends DomainObject {
     
-//    private Set<OrderEntry> entries = new HashSet<>();
-    
     private LocalDateTime dateTime;
     private Long userId;
     
@@ -15,15 +13,9 @@ public class Order extends DomainObject {
     
     public Order(Order order) {
         super(order);
+        this.dateTime = order.getDateTime();
+        this.userId = order.userId;
     }
-
-//    public Set<OrderEntry> getEntries() {
-//        return entries;
-//    }
-//
-//    public void setEntries(Set<OrderEntry> entries) {
-//        this.entries = entries;
-//    }
 
     public LocalDateTime getDateTime() {
 		return dateTime;

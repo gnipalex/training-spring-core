@@ -29,8 +29,9 @@ public class InMemoryEventDao implements EventDao {
 
     @Override
     public Event save(Event event) {
+        assertEventIsUnique(event);
         Event savedEvent = null;
-        if (eventExists(event)) {
+        if (canUpdate(event)) {
             savedEvent = getOriginalEvent(event).get();
         } else {
             savedEvent = new Event();
@@ -42,7 +43,19 @@ public class InMemoryEventDao implements EventDao {
         savedEvent.setBasePrice(event.getBasePrice());
         savedEvent.setName(event.getName());
         savedEvent.setRating(event.getRating());
+        
         return getEventCopy(savedEvent);
+    }
+    
+    private void assertEventIsUnique(Event event) {
+        boolean idsAreSame = getOriginalEvent(event).isPresent();
+        if (eventExists(event) && !idsAreSame) {
+            throw new IllegalArgumentException("such event is not unique");
+        }
+    }
+    
+    private boolean eventExists(Event event) {
+        return events.contains(event);
     }
 
     private Event getEventCopy(Event event) {
@@ -53,13 +66,13 @@ public class InMemoryEventDao implements EventDao {
         return events.stream().filter(e -> e.getId() == event.getId()).findFirst();
     }
 
-    private boolean eventExists(Event event) {
+    private boolean canUpdate(Event event) {
         return getOriginalEvent(event).isPresent();
     }
 
     @Override
     public void remove(Event event) {
-        if (!eventExists(event)) {
+        if (!canUpdate(event)) {
             throw new IllegalArgumentException("event doesn't exist");
         }
         if (ticketsPresentForEvent(event)) {
@@ -108,5 +121,9 @@ public class InMemoryEventDao implements EventDao {
 	public void setTicketDao(TicketDao ticketDao) {
 		this.ticketDao = ticketDao;
 	}
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
 
 }

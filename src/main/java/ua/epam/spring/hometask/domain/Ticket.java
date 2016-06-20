@@ -6,11 +6,10 @@ import java.util.Objects;
 /**
  * @author Yuriy_Tkach
  */
-public class Ticket extends DomainObject { //implements Comparable<Ticket> {
+public class Ticket extends DomainObject { 
 
     private LocalDateTime dateTime;
     private long seat;
-//    private long userId;
     private long orderEntryId;
     private long eventId;
     
@@ -22,7 +21,6 @@ public class Ticket extends DomainObject { //implements Comparable<Ticket> {
         this.dateTime = ticket.dateTime;
         this.seat = ticket.seat;
         this.eventId = ticket.eventId;
-//        this.userId = ticket.userId;
         this.orderEntryId = ticket.orderEntryId;
     }
 
@@ -34,25 +32,9 @@ public class Ticket extends DomainObject { //implements Comparable<Ticket> {
         return seat;
     }
 
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-
-//    public void setEvent(Event event) {
-//        this.event = event;
-//    }
-
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
-
-//    public long getUserId() {
-//		return userId;
-//	}
-//
-//	public void setUserId(long userId) {
-//		this.userId = userId;
-//	}
 
 	public long getEventId() {
 		return eventId;
@@ -66,8 +48,6 @@ public class Ticket extends DomainObject { //implements Comparable<Ticket> {
         this.seat = seat;
     }
 	
-	
-
     public long getOrderEntryId() {
 		return orderEntryId;
 	}
@@ -89,21 +69,5 @@ public class Ticket extends DomainObject { //implements Comparable<Ticket> {
         		Objects.equals(seat, other.seat) &&
                 Objects.equals(eventId, other.eventId);
     }
-
-//    @Override
-//    public int compareTo(Ticket other) {
-//        if (other == null) {
-//            return 1;
-//        }
-//        int result = dateTime.compareTo(other.getDateTime());
-//
-//        if (result == 0) {
-//            result = event.getName().compareTo(other.getEvent().getName());
-//        }
-//        if (result == 0) {
-//            result = Long.compare(seat, other.getSeat());
-//        }
-//        return result;
-//    }
 
 }

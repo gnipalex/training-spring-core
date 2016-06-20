@@ -4,7 +4,6 @@ import java.util.Objects;
 
 public class OrderEntry extends DomainObject {
 
-//    private Set<Ticket> tickets = new HashSet<>();
     private double basePrice;
     private double discount;
     private long orderId;
@@ -18,14 +17,6 @@ public class OrderEntry extends DomainObject {
         this.discount = orderEntry.discount;
         this.orderId = orderEntry.orderId;
     }
-    
-//    public Set<Ticket> getTickets() {
-//        return tickets;
-//    }
-//
-//    public void setTickets(Set<Ticket> tickets) {
-//        this.tickets = tickets;
-//    }
 
     public double getBasePrice() {
         return basePrice;

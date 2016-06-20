@@ -134,5 +134,9 @@ public class InMemoryTicketDao implements TicketDao {
 	public void setOrderDao(OrderDao orderDao) {
 		this.orderDao = orderDao;
 	}
-	
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
 }

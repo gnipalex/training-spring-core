@@ -17,5 +17,25 @@
                         p:withinDays="5" 
                         p:discountValue="5" />
     </util:list>
+    
+    <util:list id="auditoriumList">
+        <bean class="ua.epam.spring.hometask.domain.Auditorium" 
+            p:code="test-auditorium-1"
+            p:name="Test Auditorium" 
+            p:numberOfSeats="30" 
+            p:vipSeats="1,2,3" />
+            
+    </util:list>
+    
+    <alias name="defaultBookingService" alias="bookingService" />
+    <bean id="overrideStrategiesBookingService" parent="defaultBookingService" >
+        <property name="additionalPriceStrategy">
+            <bean class="ua.epam.spring.hometask.service.strategy.impl.HighRatingEventPriceStrategy">
+                <property name="highRatingMultiplier" >
+                    <value>1.2D</value>
+                </property>
+            </bean>
+        </property>
+    </bean>
         
 </beans>

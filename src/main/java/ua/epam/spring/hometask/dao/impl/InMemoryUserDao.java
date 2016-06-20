@@ -73,5 +73,9 @@ public class InMemoryUserDao implements UserDao  {
 	public void setIdGenerator(IdGenerator idGenerator) {
 		this.idGenerator = idGenerator;
 	}
-	
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
 }

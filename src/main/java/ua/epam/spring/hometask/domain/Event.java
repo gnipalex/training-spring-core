@@ -28,6 +28,7 @@ public class Event extends DomainObject {
         this.airDates = new TreeSet<>(event.airDates);
         this.basePrice = event.basePrice;
         this.rating = event.rating;
+        this.auditoriums = event.auditoriums;
     }
     
     /**

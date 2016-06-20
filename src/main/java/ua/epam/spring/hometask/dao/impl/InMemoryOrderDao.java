@@ -81,4 +81,8 @@ public class InMemoryOrderDao implements OrderDao {
 		this.idGenerator = idGenerator;
 	}
 
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
 }

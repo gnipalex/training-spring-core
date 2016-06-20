@@ -26,4 +26,10 @@ public class DefaultAuditoriumService implements AuditoriumService {
         this.auditoriumDao = auditoriumDao;
     }
 
+    @Override
+    public Auditorium getByCode(String code) {
+        Objects.requireNonNull(code);
+        return auditoriumDao.getByCode(code);
+    }
+
 }

@@ -43,7 +43,7 @@ public class InMemoryOrderEntryDao implements OrderEntryDao {
 	}
 	
 	private Optional<OrderEntry> getOriginalOrderEntryById(long id) {
-		return entries.stream().filter(oe -> oe.getId() == id).findFirst().map(this::getOrderEntryCopy);
+		return entries.stream().filter(oe -> oe.getId() == id).findFirst();
 	}
 	
 	private OrderEntry getOrderEntryCopy(OrderEntry orderEntry) {
@@ -65,8 +65,8 @@ public class InMemoryOrderEntryDao implements OrderEntryDao {
 
 	@Override
 	public Collection<OrderEntry> getAll() {
-		return entries.stream().map(this::getOrderEntryCopy)
-				.map(this::getOrderEntryCopy).collect(Collectors.toSet());
+		return entries.stream()
+		        .map(this::getOrderEntryCopy).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -95,5 +95,9 @@ public class InMemoryOrderEntryDao implements OrderEntryDao {
 	public void setIdGenerator(IdGenerator idGenerator) {
 		this.idGenerator = idGenerator;
 	}
+
+    public void setEntries(List<OrderEntry> entries) {
+        this.entries = entries;
+    }
 	
 }

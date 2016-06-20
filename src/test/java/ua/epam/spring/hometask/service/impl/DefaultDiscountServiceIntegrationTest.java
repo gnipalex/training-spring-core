@@ -21,13 +21,14 @@ import ua.epam.spring.hometask.service.EventService;
 import ua.epam.spring.hometask.service.UserService;
 
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-public class DefaultDiscountServiceTest extends AbstractServiceIntegrationTest {
+public class DefaultDiscountServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     private static final int BASE_EVENT_PRICE = 100;
     private static final LocalDateTime NOW = LocalDateTime.now();
+    private static final LocalDateTime MINUS_FOUR_DAY = NOW.minusDays(4);
+    private static final LocalDateTime MINUS_FIVE_DAY = NOW.minusDays(5);
     private static final String ALEX_HNYP_EMAIL_COM = "alex.hnyp@email.com";
 
-    
     @Resource
     private DiscountService discountService;
     @Resource
@@ -63,12 +64,12 @@ public class DefaultDiscountServiceTest extends AbstractServiceIntegrationTest {
     private User prepareUser() {
         User user = new User();
         user.setEmail(ALEX_HNYP_EMAIL_COM);
-        user.setBirthday(NOW.minusDays(5).plusMinutes(1));
         return user;
     }
     
     @Test
     public void shouldReturnFivePercentDiscount_ifUserHasBirthDayWithinFiveDays() {
+        user.setBirthday(MINUS_FOUR_DAY);
         double priceWithDiscount = discountService.getDiscount(user, event, NOW, 1);
         double expectedPrice = (BASE_EVENT_PRICE * 5) / 100;
         assertThat(priceWithDiscount).isEqualByComparingTo(expectedPrice);
@@ -76,7 +77,7 @@ public class DefaultDiscountServiceTest extends AbstractServiceIntegrationTest {
     
     @Test
     public void shouldReturnZeroDiscount_ifUserHasBirthDayMoreThanWithinFiveDays() {
-        user.setBirthday(NOW.minusDays(5).minusMinutes(1));
+        user.setBirthday(MINUS_FIVE_DAY);
         double priceWithDiscount = discountService.getDiscount(user, event, NOW, 1);
         double expectedPrice = 0;
         assertThat(priceWithDiscount).isEqualByComparingTo(expectedPrice);

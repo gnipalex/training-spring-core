@@ -1,6 +1,8 @@
 package ua.epam.spring.hometask.service.strategy.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.MonthDay;
 import java.time.temporal.ChronoUnit;
 
 import ua.epam.spring.hometask.domain.Event;
@@ -15,7 +17,7 @@ public class BirthdayDiscountStrategy implements DiscountStrategy {
     @Override
     public double getDiscount(User user, Event event,
             LocalDateTime airDateTime, long numberOfTickets) {
-        if (isDiscountApplicable(user)) {
+        if (isDiscountApplicable(user, airDateTime)) {
             double initialPrice = getInitialPrice(event, numberOfTickets);
             return (initialPrice * discountValue) / 100;
         }
@@ -26,21 +28,25 @@ public class BirthdayDiscountStrategy implements DiscountStrategy {
         return event.getBasePrice() * numberOfTickets;
     }
 
-    private boolean isDiscountApplicable(User user) {
+    private boolean isDiscountApplicable(User user, LocalDateTime airDateTime) {
         if (user != null) {
-            return isUserBirthdayWithinDiscountDays(user.getBirthday());
+            return isUserBirthdayWithinDiscountDays(user.getBirthday(), airDateTime);
         }
         return false;
     }
 
-    private boolean isUserBirthdayWithinDiscountDays(LocalDateTime userBirthday) {
+    private boolean isUserBirthdayWithinDiscountDays(LocalDateTime userBirthday, LocalDateTime airDateTime) {
         if (userBirthday != null) {
-            LocalDateTime currentTime = LocalDateTime.now();
-            long daysBetweenDates = ChronoUnit.DAYS.between(userBirthday,
-                    currentTime);
+            
+            long daysBetweenDates = ChronoUnit.DAYS.between(resetYearAndGetDate(userBirthday), 
+                    resetYearAndGetDate(airDateTime));
             return Math.abs(daysBetweenDates) < withinDays;
         }
         return false;
+    }
+    
+    private LocalDate resetYearAndGetDate(LocalDateTime dateTime) {
+        return dateTime.withYear(0).toLocalDate();
     }
 
     public void setDiscountValue(byte discountValue) {
@@ -49,6 +55,14 @@ public class BirthdayDiscountStrategy implements DiscountStrategy {
 
     public void setWithinDays(int withinDays) {
         this.withinDays = withinDays;
+    }
+    
+    public static void main(String[] args) {
+        LocalDateTime dateTime = LocalDateTime.of(2016, 3, 4, 5, 6);
+        System.out.println(dateTime);
+        System.out.println(dateTime.withYear(0));
+        MonthDay eventMonthDay = MonthDay.from(dateTime);
+        System.out.println(eventMonthDay);
     }
 
 }

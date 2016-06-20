@@ -20,6 +20,7 @@
         <property name="orderEntryDao" ref="orderEntryDao" />
         <property name="eventDao" ref="eventDao" />
         <property name="discountService" ref="discountService" />
+        <property name="orderService" ref="orderService" />
         <property name="additionalPriceStrategy">
             <bean class="ua.epam.spring.hometask.service.strategy.impl.SummingAdditionalEventPriceStrategy">
                 <property name="strategies">
