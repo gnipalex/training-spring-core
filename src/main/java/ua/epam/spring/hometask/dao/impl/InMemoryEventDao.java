@@ -10,7 +10,10 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Repository;
 
 import ua.epam.spring.hometask.dao.AuditoriumDao;
 import ua.epam.spring.hometask.dao.EventDao;
@@ -19,12 +22,16 @@ import ua.epam.spring.hometask.dao.TicketDao;
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
 
+@Repository("eventDao")
 public class InMemoryEventDao implements EventDao {
 
     private List<Event> events = new ArrayList<>();
 
+    @Resource
     private IdGenerator idGenerator;
+    @Resource
     private AuditoriumDao auditoriumDao;
+    @Resource
     private TicketDao ticketDao;
 
     @Override
@@ -43,17 +50,17 @@ public class InMemoryEventDao implements EventDao {
         savedEvent.setBasePrice(event.getBasePrice());
         savedEvent.setName(event.getName());
         savedEvent.setRating(event.getRating());
-        
+
         return getEventCopy(savedEvent);
     }
-    
+
     private void assertEventIsUnique(Event event) {
         boolean idsAreSame = getOriginalEvent(event).isPresent();
         if (eventExists(event) && !idsAreSame) {
             throw new IllegalArgumentException("such event is not unique");
         }
     }
-    
+
     private boolean eventExists(Event event) {
         return events.contains(event);
     }
@@ -63,7 +70,8 @@ public class InMemoryEventDao implements EventDao {
     }
 
     private Optional<Event> getOriginalEvent(Event event) {
-        return events.stream().filter(e -> e.getId() == event.getId()).findFirst();
+        return events.stream().filter(e -> e.getId() == event.getId())
+                .findFirst();
     }
 
     private boolean canUpdate(Event event) {
@@ -76,11 +84,12 @@ public class InMemoryEventDao implements EventDao {
             throw new IllegalArgumentException("event doesn't exist");
         }
         if (ticketsPresentForEvent(event)) {
-            throw new IllegalStateException("event can not be deleted as there are tickets for this event");
+            throw new IllegalStateException(
+                    "event can not be deleted as there are tickets for this event");
         }
         events.remove(event);
     }
-    
+
     private boolean ticketsPresentForEvent(Event event) {
         return CollectionUtils.isNotEmpty(ticketDao.getTicketsForEvent(event));
     }
@@ -93,7 +102,8 @@ public class InMemoryEventDao implements EventDao {
 
     @Override
     public Collection<Event> getAll() {
-        return events.stream().map(this::getEventCopy).collect(Collectors.toList());
+        return events.stream().map(this::getEventCopy)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -103,24 +113,29 @@ public class InMemoryEventDao implements EventDao {
     }
 
     @Override
-    public NavigableMap<LocalDateTime, Auditorium> getAuditoriumAssignments(Event event) {
-        return event.getAuditoriums().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), 
-                e -> auditoriumDao.getByCode(e.getValue()), 
-                (e1, e2) -> e1, 
-                TreeMap::new));
+    public NavigableMap<LocalDateTime, Auditorium> getAuditoriumAssignments(
+            Event event) {
+        return event
+                .getAuditoriums()
+                .entrySet()
+                .stream()
+                .collect(
+                        Collectors.toMap(e -> e.getKey(), e -> auditoriumDao
+                                .getByCode(e.getValue()), (e1, e2) -> e1,
+                                TreeMap::new));
     }
 
-	public void setIdGenerator(IdGenerator idGenerator) {
-		this.idGenerator = idGenerator;
-	}
+    public void setIdGenerator(IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
+    }
 
-	public void setAuditoriumDao(AuditoriumDao auditoriumDao) {
-		this.auditoriumDao = auditoriumDao;
-	}
+    public void setAuditoriumDao(AuditoriumDao auditoriumDao) {
+        this.auditoriumDao = auditoriumDao;
+    }
 
-	public void setTicketDao(TicketDao ticketDao) {
-		this.ticketDao = ticketDao;
-	}
+    public void setTicketDao(TicketDao ticketDao) {
+        this.ticketDao = ticketDao;
+    }
 
     public void setEvents(List<Event> events) {
         this.events = events;

@@ -9,6 +9,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Repository;
+
 import ua.epam.spring.hometask.dao.IdGenerator;
 import ua.epam.spring.hometask.dao.OrderDao;
 import ua.epam.spring.hometask.dao.OrderEntryDao;
@@ -19,12 +23,16 @@ import ua.epam.spring.hometask.domain.OrderEntry;
 import ua.epam.spring.hometask.domain.Ticket;
 import ua.epam.spring.hometask.domain.User;
 
+@Repository("ticketDao")
 public class InMemoryTicketDao implements TicketDao {
 
 	private List<Ticket> tickets = new ArrayList<>();
 	
+	@Resource
 	private IdGenerator idGenerator;
+	@Resource
 	private OrderEntryDao orderEntryDao;
+	@Resource
 	private OrderDao orderDao;
 	
 	@Override

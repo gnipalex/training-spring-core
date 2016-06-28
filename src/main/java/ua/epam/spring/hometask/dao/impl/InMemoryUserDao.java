@@ -7,72 +7,79 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Repository;
+
 import ua.epam.spring.hometask.dao.IdGenerator;
 import ua.epam.spring.hometask.dao.UserDao;
 import ua.epam.spring.hometask.domain.User;
 
-public class InMemoryUserDao implements UserDao  {
+@Repository("userDao")
+public class InMemoryUserDao implements UserDao {
 
-	private List<User> users = new ArrayList<>();
-	
-	private IdGenerator idGenerator;
+    private List<User> users = new ArrayList<>();
 
-	@Override
-	public User save(User object) {
-		User savedUser = null;
-		if (userExists(object)) {
-			savedUser = getOriginalUserById(object.getId()).get();
-		} else {
-			savedUser = new User();
-			savedUser.setId(idGenerator.generateNextId());
-			users.add(savedUser);
-		}
-		savedUser.setBalance(object.getBalance());
-		savedUser.setBirthday(object.getBirthday());
-		savedUser.setEmail(object.getEmail());
-		savedUser.setFirstName(object.getFirstName());
-		savedUser.setLastName(object.getLastName());
-		return getCopy(savedUser);
-	}
-	
-	private User getCopy(User user) {
-		return new User(user);
-	}
+    @Resource
+    private IdGenerator idGenerator;
 
-	private boolean userExists(User object) {
-		return users.stream().anyMatch(u -> u.getId() == object.getId());
-	}
+    @Override
+    public User save(User object) {
+        User savedUser = null;
+        if (userExists(object)) {
+            savedUser = getOriginalUserById(object.getId()).get();
+        } else {
+            savedUser = new User();
+            savedUser.setId(idGenerator.generateNextId());
+            users.add(savedUser);
+        }
+        savedUser.setBalance(object.getBalance());
+        savedUser.setBirthday(object.getBirthday());
+        savedUser.setEmail(object.getEmail());
+        savedUser.setFirstName(object.getFirstName());
+        savedUser.setLastName(object.getLastName());
+        return getCopy(savedUser);
+    }
 
-	@Override
-	public void remove(User object) {
-		if (!userExists(object)) {
-			throw new IllegalArgumentException("user does not exist");
-		}
-		users.remove(object);
-	}
+    private User getCopy(User user) {
+        return new User(user);
+    }
 
-	@Override
-	public User getById(long id) {
-		return getOriginalUserById(id).map(User::new).orElse(null);
-	}
-	
-	private Optional<User> getOriginalUserById(long id) {
-		return users.stream().filter(u -> u.getId() == id).findFirst();
-	}
+    private boolean userExists(User object) {
+        return users.stream().anyMatch(u -> u.getId() == object.getId());
+    }
 
-	@Override
-	public Collection<User> getAll() {
-		return users.stream().map(this::getCopy).collect(Collectors.toList());
-	}
+    @Override
+    public void remove(User object) {
+        if (!userExists(object)) {
+            throw new IllegalArgumentException("user does not exist");
+        }
+        users.remove(object);
+    }
 
-	@Override
-	public User getUserByEmail(String email) {
-		return users.stream().filter(u -> Objects.equals(u.getEmail(), email)).findFirst().map(this::getCopy).orElse(null);
-	}
+    @Override
+    public User getById(long id) {
+        return getOriginalUserById(id).map(User::new).orElse(null);
+    }
 
-	public void setIdGenerator(IdGenerator idGenerator) {
-		this.idGenerator = idGenerator;
-	}
+    private Optional<User> getOriginalUserById(long id) {
+        return users.stream().filter(u -> u.getId() == id).findFirst();
+    }
+
+    @Override
+    public Collection<User> getAll() {
+        return users.stream().map(this::getCopy).collect(Collectors.toList());
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return users.stream().filter(u -> Objects.equals(u.getEmail(), email))
+                .findFirst().map(this::getCopy).orElse(null);
+    }
+
+    public void setIdGenerator(IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
+    }
 
     public void setUsers(List<User> users) {
         this.users = users;

@@ -3,12 +3,18 @@ package ua.epam.spring.hometask.service.impl;
 import java.util.Collection;
 import java.util.Objects;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import ua.epam.spring.hometask.dao.EventDao;
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.service.EventService;
 
+@Service("eventService")
 public class DefaultEventService implements EventService {
 
+    @Resource
     private EventDao eventDao;
     
     @Override

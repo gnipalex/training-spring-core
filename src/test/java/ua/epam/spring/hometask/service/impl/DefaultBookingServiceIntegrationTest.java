@@ -3,7 +3,6 @@ package ua.epam.spring.hometask.service.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
@@ -47,10 +46,6 @@ public class DefaultBookingServiceIntegrationTest extends AbstractServiceIntegra
     private static final LocalDateTime EVENT_2_DATE_1  = LocalDateTime.of(2016, 3, 10, 0, 0);
     private static final String AUDITORIUM_CODE = "test-auditorium-1";
     
-    public static void main(String[] args) {
-        System.out.println(ChronoUnit.DAYS.between(USER_BIRTHDAY.withYear(0).toLocalDate(), EVENT_1_DATE_1.withYear(0).toLocalDate()));
-    }
-    
     @Resource
     private OrderService orderService;
     @Resource
@@ -73,7 +68,6 @@ public class DefaultBookingServiceIntegrationTest extends AbstractServiceIntegra
         this.user = saveUser();
         this.event1 = saveEvent(EVENT_1_NAME, EVENT_1_DATE_1, AUDITORIUM_CODE, EVENT_1_BASE_PRICE);
         this.event2 = saveEvent(EVENT_2_NAME, EVENT_2_DATE_1, AUDITORIUM_CODE, EVENT_2_BASE_PRICE);
-
     }
 
     private User saveUser() {

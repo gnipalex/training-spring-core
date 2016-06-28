@@ -9,7 +9,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Service;
 
 import ua.epam.spring.hometask.dao.EventDao;
 import ua.epam.spring.hometask.dao.OrderEntryDao;
@@ -25,13 +28,20 @@ import ua.epam.spring.hometask.service.DiscountService;
 import ua.epam.spring.hometask.service.OrderService;
 import ua.epam.spring.hometask.service.strategy.EventAdditionalPriceStrategy;
 
+@Service("bookingService")
 public class DefaultBookingService implements BookingService {
 
+    @Resource
     private TicketDao ticketDao;
+    @Resource
     private OrderEntryDao orderEntryDao;
+    @Resource
     private EventDao eventDao;
+    @Resource
     private DiscountService discountService;
+    @Resource(name = "summingAdditionalEventPriceStrategy")
     private EventAdditionalPriceStrategy additionalPriceStrategy;
+    @Resource
     private OrderService orderService;
     
     @Override

@@ -21,6 +21,14 @@ public class Auditorium  extends AbstractDomainObject {
     public Auditorium() {
     }
     
+    public Auditorium(String name, String code, long numberOfSeats,
+            Set<Long> vipSeats) {
+        this.name = name;
+        this.code = code;
+        this.numberOfSeats = numberOfSeats;
+        this.vipSeats = vipSeats;
+    }
+
     public Auditorium(Auditorium auditorium) {
         this.name = auditorium.name;
         this.vipSeats = new HashSet<>(auditorium.vipSeats);

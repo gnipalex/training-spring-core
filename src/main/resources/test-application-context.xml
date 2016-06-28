@@ -4,31 +4,42 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util.xsd">
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="application-context.xml" />
+    <context:annotation-config />
+    <context:component-scan base-package="ua.epam.spring.hometask.context" />
     
-    <util:list id="discountStrategies">
-        <bean class="ua.epam.spring.hometask.service.strategy.impl.BirthdayDiscountStrategy" 
-                        p:withinDays="5" 
-                        p:discountValue="5" />
-    </util:list>
+    <alias name="testDiscountService" alias="discountService" />
+    <bean id="testDiscountService" class="ua.epam.spring.hometask.service.impl.DefaultDiscountService">
+        <property name="discountStrategies">
+            <list>
+                <bean class="ua.epam.spring.hometask.service.strategy.impl.BirthdayDiscountStrategy" 
+                            p:withinDays="5" 
+                            p:discountValue="5" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="testInMemoryAuditoriumDao" name="auditoriumDao" class="ua.epam.spring.hometask.dao.impl.InMemoryAuditoriumDao">
+        <constructor-arg>
+            <set>
+                <bean class="ua.epam.spring.hometask.domain.Auditorium" 
+                    p:code="test-auditorium-1"
+                    p:name="Test Auditorium" 
+                    p:numberOfSeats="30" 
+                    p:vipSeats="1,2,3" />
+            </set>
+        </constructor-arg>
+    </bean>
     
-    <util:list id="auditoriumList">
-        <bean class="ua.epam.spring.hometask.domain.Auditorium" 
-            p:code="test-auditorium-1"
-            p:name="Test Auditorium" 
-            p:numberOfSeats="30" 
-            p:vipSeats="1,2,3" />
-            
-    </util:list>
-    
-    <alias name="defaultBookingService" alias="bookingService" />
-    <bean id="overrideStrategiesBookingService" parent="defaultBookingService" >
+    <bean id="overrideStrategiesBookingService" name="bookingService" class="ua.epam.spring.hometask.service.impl.DefaultBookingService" >
         <property name="additionalPriceStrategy">
             <bean class="ua.epam.spring.hometask.service.strategy.impl.HighRatingEventPriceStrategy">
                 <property name="highRatingMultiplier" >
