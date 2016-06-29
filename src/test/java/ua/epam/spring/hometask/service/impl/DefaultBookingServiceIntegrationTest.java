@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -212,6 +213,9 @@ public class DefaultBookingServiceIntegrationTest extends AbstractServiceIntegra
         bookingService.bookTickets(user, additionalTickets);
     }
     
-    
+    @Test
+    public void shouldReturnPriceForEvent() {
+        bookingService.getTicketsPrice(event1, EVENT_1_DATE_1, user, new HashSet<>(1));
+    }
 
 }
