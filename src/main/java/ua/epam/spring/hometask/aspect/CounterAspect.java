@@ -40,7 +40,7 @@ public class CounterAspect {
         if (name != null) {
             Long accessTimes = increment(eventAccessedByNameTimes.get(name));
             eventAccessedByNameTimes.put(name, accessTimes);
-            LOG.info(String.format("event [%s] accessed %d times", name, accessTimes));
+            LOG.info(String.format("event [%s] accessed by name %d times", name, accessTimes));
         }
     }
     

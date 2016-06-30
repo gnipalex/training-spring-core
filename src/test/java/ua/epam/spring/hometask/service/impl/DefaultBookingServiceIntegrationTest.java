@@ -215,7 +215,20 @@ public class DefaultBookingServiceIntegrationTest extends AbstractServiceIntegra
     
     @Test
     public void shouldReturnPriceForEvent() {
-        bookingService.getTicketsPrice(event1, EVENT_1_DATE_1, user, new HashSet<>(1));
+        double price = bookingService.getTicketsPrice(event1, EVENT_1_DATE_1, user, new HashSet<>(Arrays.<Long> asList(1L)));
+        assertThat(price).isGreaterThan(0D);
     }
+    
+    @Test
+    public void shouldCreateBooking_whenUserIsNull() {
+        Ticket ticket1 = prepareTicket(EVENT_1_DATE_1, event1, 1);
+        Ticket ticket2 = prepareTicket(EVENT_1_DATE_1, event1, 2);
+        Set<Ticket> tickets = toSet(ticket1, ticket2);
+        
+        Order order = bookingService.bookTickets(null, tickets);
+        assertThat(order).isNotNull();
+    }
+    
+    
 
 }

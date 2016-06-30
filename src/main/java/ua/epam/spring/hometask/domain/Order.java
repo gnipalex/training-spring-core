@@ -7,6 +7,7 @@ public class Order extends DomainObject {
     
     private LocalDateTime dateTime;
     private Long userId;
+    private String description;
     
     public Order() {
     }
@@ -15,6 +16,7 @@ public class Order extends DomainObject {
         super(order);
         this.dateTime = order.getDateTime();
         this.userId = order.userId;
+        this.description = order.description;
     }
 
     public LocalDateTime getDateTime() {
@@ -32,8 +34,16 @@ public class Order extends DomainObject {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+	
+	public String getDescription() {
+        return description;
+    }
 
-	@Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(getId(), dateTime);
     }

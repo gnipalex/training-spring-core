@@ -39,6 +39,7 @@ public class InMemoryOrderDao implements OrderDao {
         }
         savedOrder.setDateTime(object.getDateTime());
         savedOrder.setUserId(object.getUserId());
+        savedOrder.setDescription(object.getDescription());
         return getOrderCopy(savedOrder);
     }
 

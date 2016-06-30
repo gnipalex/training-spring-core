@@ -23,6 +23,9 @@
                 <bean class="ua.epam.spring.hometask.service.strategy.impl.BirthdayDiscountStrategy" 
                             p:withinDays="5" 
                             p:discountValue="5" />
+                <bean class="ua.epam.spring.hometask.service.strategy.impl.EveryXTicketDiscountStrategy"
+                            p:number="2"
+                            p:discountPercent="50" />
             </list>
         </property>
     </bean>
