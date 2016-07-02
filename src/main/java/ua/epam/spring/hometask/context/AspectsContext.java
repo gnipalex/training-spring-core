@@ -29,6 +29,7 @@ public class AspectsContext {
         return new LuckyWinnerAspect();
     }
     
+    // due to this bean in the context some integration tests may fail
     @Bean
     public LuckyUserStrategy luckyUserStrategy() {
         return new RandomLuckyUserStrategy();

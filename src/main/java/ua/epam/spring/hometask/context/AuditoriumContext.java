@@ -1,18 +1,13 @@
 package ua.epam.spring.hometask.context;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import ua.epam.spring.hometask.dao.AuditoriumDao;
-import ua.epam.spring.hometask.dao.impl.InMemoryAuditoriumDao;
 import ua.epam.spring.hometask.domain.Auditorium;
 
 @Configuration
@@ -47,24 +42,5 @@ public class AuditoriumContext {
             @Value("${auditorium.3.vipSeats}") Set<Long> vipSeats) {
         return new Auditorium(name, code, numberOfSeats, vipSeats);
     }
-    
-//    @Bean(name = {"auditoriumSet" , "defaultAuditoriumSet"})
-//    public Set<Auditorium> auditoriumSet(Auditorium auditorium1,
-//            Auditorium auditorium2,
-//            Auditorium auditorium3) {
-//        return new HashSet<>(Arrays.asList(auditorium1, auditorium2, auditorium3));
-//    }
-    
-//    @Bean(name = "auditoriumDao", initMethod = "checkAuditoriumsProvided")
-//    public AuditoriumDao inMemoryAuditoriumDao(Set<Auditorium> auditoriumSet) {
-//        return new InMemoryAuditoriumDao(auditoriumSet);
-//    }
-    
-//    @Bean
-//    public AuditoriumService auditoriumService(AuditoriumDao auditoriumDao) {
-//        DefaultAuditoriumService defaultAuditoriumService = new DefaultAuditoriumService();
-//        defaultAuditoriumService.setAuditoriumDao(auditoriumDao);
-//        return defaultAuditoriumService;
-//    }
    
 }
