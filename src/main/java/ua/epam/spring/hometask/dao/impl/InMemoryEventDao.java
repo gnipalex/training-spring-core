@@ -22,7 +22,7 @@ import ua.epam.spring.hometask.dao.TicketDao;
 import ua.epam.spring.hometask.domain.Auditorium;
 import ua.epam.spring.hometask.domain.Event;
 
-@Repository("eventDao")
+//@Repository("eventDao")
 public class InMemoryEventDao implements EventDao {
 
     private List<Event> events = new ArrayList<>();

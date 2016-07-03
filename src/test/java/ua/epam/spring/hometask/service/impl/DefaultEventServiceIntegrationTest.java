@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 
 import org.assertj.core.api.Assertions;
+import org.hamcrest.core.IsEqual;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
@@ -19,7 +20,7 @@ import ua.epam.spring.hometask.domain.EventRating;
 import ua.epam.spring.hometask.service.AuditoriumService;
 import ua.epam.spring.hometask.service.EventService;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class DefaultEventServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     private static final String EVENT_1_NAME = "event 1 name";
@@ -68,8 +69,19 @@ public class DefaultEventServiceIntegrationTest extends AbstractServiceIntegrati
         assertThat(eventService.getAll()).hasSize(2);
     }
     
-    @Test(expected=IllegalArgumentException.class)
-    public void shouldThrowIllegalArgumentException_whenSaveEventWithExistingName() {
+    @Test
+    public void shouldSaveAllEventFields() {
+        Event event = eventService.getByName(EVENT_1_NAME);
+        assertThat(event.getAirDates()).isEqualTo(event1.getAirDates());
+        assertThat(event.getAuditoriums()).isEqualTo(event1.getAuditoriums());
+        assertThat(event.getBasePrice()).isEqualTo(event1.getBasePrice());
+        assertThat(event.getId()).isEqualTo(event1.getId());
+        assertThat(event.getName()).isEqualTo(event1.getName());
+        assertThat(event.getRating()).isEqualTo(event.getRating());
+    }
+    
+    @Test(expected=RuntimeException.class)
+    public void shouldThrowRuntimeException_whenSaveEventWithExistingName() {
         Event event = prepareEvent(EVENT_1_NAME);
         eventService.save(event);
     }

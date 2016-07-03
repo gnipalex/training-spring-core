@@ -5,16 +5,21 @@
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <context:annotation-config />
     <context:component-scan base-package="ua.epam.spring.hometask.context" />
+    
+    <context:property-placeholder location="classpath:test-jdbc.properties" />
     
     <alias name="testDiscountService" alias="discountService" />
     <bean id="testDiscountService" class="ua.epam.spring.hometask.service.impl.DefaultDiscountService">
@@ -51,5 +56,10 @@
             </bean>
         </property>
     </bean>
+    
+    <jdbc:initialize-database data-source="dataSource" 
+        ignore-failures="DROPS">
+        <jdbc:script location="classpath:schema.sql" />
+    </jdbc:initialize-database>
         
 </beans>

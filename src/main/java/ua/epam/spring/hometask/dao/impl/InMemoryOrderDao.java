@@ -9,15 +9,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Repository;
-
 import ua.epam.spring.hometask.dao.IdGenerator;
 import ua.epam.spring.hometask.dao.OrderDao;
 import ua.epam.spring.hometask.dao.OrderEntryDao;
 import ua.epam.spring.hometask.domain.Order;
 import ua.epam.spring.hometask.domain.User;
 
-@Repository("orderDao")
+//@Repository("orderDao")
 public class InMemoryOrderDao implements OrderDao {
 
     private List<Order> orders = new ArrayList<>();

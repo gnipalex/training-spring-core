@@ -15,7 +15,7 @@ import ua.epam.spring.hometask.dao.IdGenerator;
 import ua.epam.spring.hometask.dao.UserDao;
 import ua.epam.spring.hometask.domain.User;
 
-@Repository("userDao")
+//@Repository("userDao")
 public class InMemoryUserDao implements UserDao {
 
     private List<User> users = new ArrayList<>();

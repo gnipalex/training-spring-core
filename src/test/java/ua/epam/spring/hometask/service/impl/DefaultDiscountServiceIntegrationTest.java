@@ -10,8 +10,6 @@ import javax.annotation.Resource;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 import ua.epam.spring.hometask.domain.Event;
 import ua.epam.spring.hometask.domain.User;
@@ -20,10 +18,11 @@ import ua.epam.spring.hometask.service.DiscountService;
 import ua.epam.spring.hometask.service.EventService;
 import ua.epam.spring.hometask.service.UserService;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class DefaultDiscountServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     private static final int BASE_EVENT_PRICE = 100;
+    private static final String EVENT_NAME = "event name";
     private static final LocalDateTime NOW = LocalDateTime.now();
     private static final LocalDateTime MINUS_FOUR_DAY = NOW.minusDays(4);
     private static final LocalDateTime MINUS_FIVE_DAY = NOW.minusDays(5);
@@ -54,6 +53,7 @@ public class DefaultDiscountServiceIntegrationTest extends AbstractServiceIntegr
         airDates.add(NOW);
         event.setAirDates(airDates);
         event.setBasePrice(BASE_EVENT_PRICE);
+        event.setName(EVENT_NAME);
         
         TreeMap<LocalDateTime, String> auditoriums = new TreeMap<>();
         auditoriums.put(NOW, "room-imax");

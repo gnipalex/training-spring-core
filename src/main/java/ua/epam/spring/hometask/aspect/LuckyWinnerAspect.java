@@ -22,11 +22,10 @@ import ua.epam.spring.hometask.service.strategy.LuckyUserStrategy;
 @Aspect
 public class LuckyWinnerAspect {
 
-    private static final String NEW_LINE = "\n";
-
-    private static final String YOU_ARE_LUCKY_MESSAGE = "You are lucky, thats why you get your tickets for free. Enjoy!!";
-
     private static final Logger LOG = Logger.getLogger(LuckyWinnerAspect.class);
+    
+    private static final String NEW_LINE = "\n";
+    private static final String YOU_ARE_LUCKY_MESSAGE = "You are lucky, thats why you get your tickets for free. Enjoy!!";
     
     @Autowired(required = false)
     private LuckyUserStrategy luckyUserStrategy;

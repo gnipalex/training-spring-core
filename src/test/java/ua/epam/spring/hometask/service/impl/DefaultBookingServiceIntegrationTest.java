@@ -13,8 +13,6 @@ import javax.annotation.Resource;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 import ua.epam.spring.hometask.dao.TicketDao;
 import ua.epam.spring.hometask.domain.Auditorium;
@@ -30,7 +28,7 @@ import ua.epam.spring.hometask.service.EventService;
 import ua.epam.spring.hometask.service.OrderService;
 import ua.epam.spring.hometask.service.UserService;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class DefaultBookingServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     private static final String USER_1_EMAIL = "user 1 email";

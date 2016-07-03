@@ -6,7 +6,7 @@ public class OrderEntry extends DomainObject {
 
     private double basePrice;
     private double discount;
-    private long orderId;
+    private Long orderId;
     
     public OrderEntry() {
     }
@@ -34,11 +34,11 @@ public class OrderEntry extends DomainObject {
         this.discount = discount;
     }
 
-	public long getOrderId() {
+	public Long getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(long orderId) {
+	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
 

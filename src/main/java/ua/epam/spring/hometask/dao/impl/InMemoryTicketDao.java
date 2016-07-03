@@ -23,7 +23,7 @@ import ua.epam.spring.hometask.domain.OrderEntry;
 import ua.epam.spring.hometask.domain.Ticket;
 import ua.epam.spring.hometask.domain.User;
 
-@Repository("ticketDao")
+//@Repository("ticketDao")
 public class InMemoryTicketDao implements TicketDao {
 
 	private List<Ticket> tickets = new ArrayList<>();

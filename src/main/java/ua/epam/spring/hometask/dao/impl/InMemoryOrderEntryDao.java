@@ -19,7 +19,7 @@ import ua.epam.spring.hometask.domain.Order;
 import ua.epam.spring.hometask.domain.OrderEntry;
 import ua.epam.spring.hometask.domain.Ticket;
 
-@Repository("orderEntryDao")
+//@Repository("orderEntryDao")
 public class InMemoryOrderEntryDao implements OrderEntryDao {
 
     private List<OrderEntry> entries = new ArrayList<>();
